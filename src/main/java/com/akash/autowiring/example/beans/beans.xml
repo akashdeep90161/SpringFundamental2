@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                         http://www.springframework.org/schema/context
+                          http://www.springframework.org/schema/context/spring-context-4.0.xsd"
+  >
+
+  <context:annotation-config>
+  </context:annotation-config><context:component-scan base-package="com.akash.autowiring.example">
+</context:component-scan>
+  <context:property-placeholder location="classpath:jdbc.properties"></context:property-placeholder>
+  <bean id="robot" class="com.akash.autowiring.example.Robot">
+    <property name="id" value="${jdbc.username}"></property>
+    <property name="speech" value="${jdbc.password}"></property>
+  </bean>
+
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+      destroy-method="close" >
+        <!-- Here I am trying to configure connection pool using dbcp. By using this we have not to care
+        about closing and opening connection everytime you query again and again  -->
+        <property name="driverClassName" value="${jdbc.driver}"></property>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+        <property name="initialSize" value="2" />
+        <property name="maxActive" value="5" />
+    </bean>
+    <!-- C:\Users\Akash Deep Gupta\IdeaProjects\Autowiring\src\main\resources\jdbc.properties
+  C:\Users\Akash Deep Gupta\IdeaProjects\Autowiring\src\main\java\com\akash\autowiring\example\beans\beans.xml
+  C:\Users\Akash Deep Gupta\IdeaProjects\Autowiring\src\main\java\com\akash\autowiring\example\resources\jdbc.properties
+
+  -->
+
+  <!-- Below beans are not required because I am going to use Component Scan Which scans required beans AUTOMATICALY -->
+
+   <!-- <bean id="logger" class="com.akash.autowiring.example.Logger"
+    scope="singleton">
+
+    </bean>
+
+    <bean id="ddsff" class="com.akash.autowiring.example.ConsoleWriter">
+    </bean>
+    <bean id="consoleWriter" class="com.akash.autowiring.example.ConsoleWriter"/>
+&lt;!&ndash;    if you are  using autowire byName then the name of argument  in setter method in Logger class must be matched with id or name of the beans
+        if you are  using autowire byType then the type of argument  in setter method in Logger class must be unique
+   <qualifier value="toThisBean"></qualifier>
+ &ndash;&gt;
+
+    <bean id="fileWriter"
+          class="com.akash.autowiring.example.FileWriter" >
+
+    </bean>
+
+   &lt;!&ndash; <bean id="adfff"
+          class="com.akash.autowiring.example.FileWriter" >
+    </bean>&ndash;&gt;
+
+   &lt;!&ndash; <bean id="fileWriter" autowire-candidate="false" class="com.akash.autowiring.example.FileWriter">
+
+        &lt;!&ndash;By default, autowiring scan and matches all bean definitions in scope. If you want to exclude some bean definitions
+        so that they can not be injected through autowiring mode, you can do this using ‘autowire-candidate’ set to false. &ndash;&gt;
+
+    </bean>&ndash;&gt;
+
+  -->
+</beans>
